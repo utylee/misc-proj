@@ -8,7 +8,8 @@ import time
 import threading
 import asyncio
 import os
-import quamash
+import pdb
+#import quamash
 
 
 class CVisitProc(threading.Thread):
@@ -37,16 +38,17 @@ class CWatchProc(threading.Thread):
     def __init__(self, loop):
         super().__init__()
 
-        # 불펜주소입니다
-        self.url2 = 'http://mlbpark.donga.com/mbs/articleL.php?mbsC=bullpen2'
+        # 하나투어 북유럽투어주소입니다
+        #self.url2 = 'http://mlbpark.donga.com/mbs/articleL.php?mbsC=bullpen2'
+        self.url2 = 'http://www.hanatour.com/asp/booking/productPackage/pk-12000.asp?pkg_code=ENP306150918AY&promo_doumi_code='
 
         self.encoding = 'cp949' 
         self.found = False
         self.pattern = '.*(유라|걸스데이|걸데|민아|소진|혜리|BULLDESS).*'
         self.urlpattern = '.*href=\'(.*)&cpage'
         self.true_or_not = True 
-        self.interval = 180 
-        #self.interval = 5 
+        #self.interval = 180 
+        self.interval = 5 
         self.target_url = ''
         self.visted_list = []
         self.loop = loop
@@ -71,6 +73,7 @@ class CWatchProc(threading.Thread):
                 line_num = 0
     
                 for line in fulllines:
+                    print(line)
                     line_num = line_num + 1
                     matching = re_patt.match(line.decode('cp949'))
                     if matching:
