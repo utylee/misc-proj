@@ -8,7 +8,7 @@ import asyncio
 #import subprocess
 import pycurl, json
 
-print('started')
+print('started at {}'.format(time.strftime('%H:%M')))
 
 # 해당 주소와 패턴을 정의합니다
 url = "http://www.hanatour.com/asp/booking/productPackage/pk-12000.asp?pkg_code=ENP306150918AY&promo_doumi_code="
@@ -114,7 +114,10 @@ class FetchReservers():
         #print(r)
             
 fetcher = FetchReservers() 
+
+#with loop:
 loop.run_until_complete(fetcher.fetchurl())
 
 print('process closing...')
+
 loop.close()
