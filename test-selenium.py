@@ -41,8 +41,8 @@ class FetchReservers():
         yield from loop.run_in_executor(None, self.geturl)
         #driver.save_screenshot('screen.png')
         
-        print('parsing target...')
         # 클래스명을 통해 해당 요소를 찾아냅니다
+        print('parsing target...')
         elem = phantom_drv.find_element_by_class_name("table_detail")
         
         i = 0
