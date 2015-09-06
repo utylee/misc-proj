@@ -8,6 +8,7 @@ import asyncio
 #import subprocess
 import pycurl, json
 
+print('started')
 
 # 해당 주소와 패턴을 정의합니다
 url = "http://www.hanatour.com/asp/booking/productPackage/pk-12000.asp?pkg_code=ENP306150918AY&promo_doumi_code="
@@ -18,6 +19,7 @@ intv = 10
 re_pattern = re.compile(patt)
 
 # selenium 드라이버를 숨김 브라우저로 정의합니다
+print('executing phantomjs...')
 phantom_drv = webdriver.PhantomJS()
 #driver = webdriver.Firefox()
 
@@ -34,10 +36,12 @@ class FetchReservers():
 
     @asyncio.coroutine
     def fetchurl(self):
+        print('starting fetching process...')
         # 해당주소로 접속합니다
         yield from loop.run_in_executor(None, self.geturl)
         #driver.save_screenshot('screen.png')
         
+        print('parsing target...')
         # 클래스명을 통해 해당 요소를 찾아냅니다
         elem = phantom_drv.find_element_by_class_name("table_detail")
         
@@ -51,37 +55,39 @@ class FetchReservers():
             if re_match:
                 self.current_num = re_match.group(1)
                 print('---------------------------------------')
-                print(self.current_num)
+                print('* foundedNum : {}'.format(self.current_num))
+                print('---------------------------------------')
                 found = 1
                 break
             i = i + 1
         
         # 찾았을 경우 출력하고 파일에 저장합니다
         if found:
-            print('i got you ^^')
+            print('reading db file...')
             with open(self.file_name, 'r') as infile:
                 self.before_num = infile.readline().strip()
-                print(self.before_num)
                 
 
             # 기존 값과 다를 경우 instapush합니다
             if self.current_num != self.before_num:
                 # instapush에 메세지를 보냅니다
+                print('insta pushing...')
                 self.instapush(self.before_num, self.current_num)
 
             # 새로운 값을 파일에 저장합니다.
             #import pdb;pdb.set_trace()
+            print('writing db file...')
             with open(self.file_name, 'w') as outfile:
                 outfile.write(self.current_num)
 
 
     def geturl(self):
+        print('navigating...')
         phantom_drv.get(self.url)
 
     def instapush(self, before_num, current_num):
         #json_param = '{"event":"newpost", "trackers":{"keyword":"{}"}}'.format(msg,) 
         #json_param = '{"event":"newpost", "trackers":{"keyword":"%s"}}'%(msg,) 
-        print('instapushing...')
 
         #data = json.dumps({"event":"newpost", "trackers":{"message":"16"}})
         msg2 = '.북유럽 인원: \n  {}명 --> {}명 '.format(before_num, current_num)
@@ -110,4 +116,5 @@ class FetchReservers():
 fetcher = FetchReservers() 
 loop.run_until_complete(fetcher.fetchurl())
 
+print('process closing...')
 loop.close()
