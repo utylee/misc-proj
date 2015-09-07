@@ -18,7 +18,7 @@ intv = 10
 # 정규식 패턴을 컴파일합니다
 re_pattern = re.compile(patt)
 
-# selenium 드라이버를 숨김 브라우저로 정의합니다
+# selenium 드라이버를 숨김 브라우저(PhantomJS)로 정의합니다
 print('executing phantomjs...')
 phantom_drv = webdriver.PhantomJS()
 #driver = webdriver.Firefox()
