@@ -13,7 +13,6 @@ print('started at {}'.format(time.strftime('%H:%M')))
 # 해당 주소와 패턴을 정의합니다
 url = "http://www.hanatour.com/asp/booking/productPackage/pk-12000.asp?pkg_code=ENP306150918AY&promo_doumi_code="
 patt = '예약 : (.*)명 / 좌'
-intv = 10
 
 # 정규식 패턴을 컴파일합니다
 re_pattern = re.compile(patt)
@@ -30,7 +29,6 @@ class FetchReservers():
     def __init__(self):
         self.url = "http://www.hanatour.com/asp/booking/productPackage/pk-12000.asp?pkg_code=ENP306150918AY&promo_doumi_code="
         self.patt = '예약 : (.*)명 / 좌'
-        self.intv = 10
         self.file_name = 'current_rsv.dat'
         self.current_num = 0
 
